@@ -1,7 +1,7 @@
 import tkinter
 import capture
+import take_photo
 import os
-from tkinter import ttk
 
 def onClick():
     name = nameEntry.get().strip()
@@ -19,7 +19,10 @@ def onClick():
     except ValueError:
         errLabel["text"] = 'Please input valid threshold.'
         return
-    capture.capture(name, eyeCombo.get(), threshold)
+    capture.capture(name, eye.get(), threshold)
+
+def onPhoto(event):
+    take_photo.take_photo()
 
 def eventhandler(event):
     root.quit()    
@@ -29,30 +32,33 @@ root = tkinter.Tk()
 root.title("capture")
 root.bind('<Escape>', eventhandler)
 
-tkinter.Label(root, text="Dog name:").grid(padx=10, pady=10, row=0, column=0)
+photo = tkinter.Label(root, text="photo", relief="groove", width=15, height=10)
+photo.bind('<ButtonRelease>', onPhoto)
+photo.grid(padx=10, pady=10, row=0, columnspan=3)
+
+tkinter.Label(root, text="Dog name:").grid(padx=10, pady=10, row=1, column=0)
 
 nameEntry = tkinter.Entry(root)
-nameEntry.grid(padx=10, pady=10, row=0, column=1)
+nameEntry.grid(padx=10, pady=10, row=1, column=1, columnspan=2)
 
-tkinter.Label(root, text="Threshold:").grid(padx=10, pady=10, row=1, column=0)
+tkinter.Label(root, text="Threshold:").grid(padx=10, pady=10, row=2, column=0)
 
 value = tkinter.IntVar()
 threEntry = tkinter.Entry(root, textvariable = value)
 value.set(200)
-threEntry.grid(padx=10, pady=10, row=1, column=1)
+threEntry.grid(padx=10, pady=10, row=2, column=1, columnspan=2)
 
+tkinter.Label(root, text="Eye:").grid(padx=10, pady=10, row=3, column=0)
 
-tkinter.Label(root, text="Eye:").grid(padx=10, pady=10, row=2, column=0)
-
-eyeCombo = ttk.Combobox(root, state="readonly", textvariable=tkinter.StringVar())
-eyeCombo['values'] = ('left', 'right')
-eyeCombo.current(0)
-eyeCombo.grid(padx=10, pady=10, row=2, column=1) 
+eye = tkinter.StringVar()
+eye.set("left")
+tkinter.Radiobutton(root, text="left", variable=eye, value="left").grid(padx=10, pady=10, row=3, column=1) 
+tkinter.Radiobutton(root, text="right", variable=eye, value="right").grid(padx=10, pady=10, row=3, column=2) 
 
 errLabel = tkinter.Label(root, fg='red')
-errLabel.grid(padx=10, pady=10, row=3, columnspan=2)
+errLabel.grid(padx=10, pady=10, row=4, columnspan=3)
 
-tkinter.Button(root, text="Start", command = onClick).grid(padx=10, pady=10, row=4, columnspan=2)
+tkinter.Button(root, text="Start", command = onClick).grid(padx=10, pady=10, row=5, columnspan=3)
 
 # Show the UI
 root.mainloop() 
