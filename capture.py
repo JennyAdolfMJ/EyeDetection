@@ -1,6 +1,7 @@
 import cv2
+import winsound
 
-def capture(name, threshold):
+def capture(name, eye, threshold):
     # multiple cascades: https://github.com/Itseez/opencv/tree/master/data/haarcascades
     
     #https://github.com/Itseez/opencv/blob/master/data/haarcascades/haarcascade_frontalface_default.xml
@@ -33,7 +34,8 @@ def capture(name, threshold):
                 cv2.rectangle(img,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
             else:
                 cv2.rectangle(img,(ex,ey),(ex+ew,ey+eh),(255,0,0),2)
-                cv2.imwrite('{}/{}_{}.png'.format(name, i, fm), img[ey:ey+eh, ex:ex+ew])
+                cv2.imwrite('{}/{}{}_{}.png'.format(name, eye, i, fm), img[ey:ey+eh, ex:ex+ew])
+                winsound.PlaySound("puppy_sound_1.wav", winsound.SND_ALIAS)
                 i += 1
     
         cv2.imshow('Camera',img)

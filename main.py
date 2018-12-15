@@ -1,6 +1,7 @@
 import tkinter
 import capture
 import os
+from tkinter import ttk
 
 def onClick():
     name = nameEntry.get().strip()
@@ -18,7 +19,7 @@ def onClick():
     except ValueError:
         errLabel["text"] = 'Please input valid threshold.'
         return
-    capture.capture(name, threshold)
+    capture.capture(name, eyeCombo.get(), threshold)
 
 def eventhandler(event):
     root.quit()    
@@ -39,6 +40,14 @@ value = tkinter.IntVar()
 threEntry = tkinter.Entry(root, textvariable = value)
 value.set(200)
 threEntry.grid(padx=10, pady=10, row=1, column=1)
+
+
+tkinter.Label(root, text="Eye:").grid(padx=10, pady=10, row=2, column=0)
+
+eyeCombo = ttk.Combobox(root, state="readonly", textvariable=tkinter.StringVar())
+eyeCombo['values'] = ('left', 'right')
+eyeCombo.current(0)
+eyeCombo.grid(padx=10, pady=10, row=2, column=1) 
 
 errLabel = tkinter.Label(root, fg='red')
 errLabel.grid(padx=10, pady=10, row=3, columnspan=2)
